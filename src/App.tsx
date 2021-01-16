@@ -1,21 +1,36 @@
-import { Box, Container, Typography } from '@material-ui/core';
-import React from 'react';
-import AppThemeProvider from './providers/app-theme-provider/AppThemeProvider';
+import React, { StrictMode } from 'react';
+import { BrowserRouter as AppRouter, Route, Switch } from 'react-router-dom';
+import { RootPath } from './constants/navigation';
+import AppConfigurationProvider from './providers/app-configuration-provider';
+import AppStoreProvider from './providers/app-store-provider';
+import AppThemeProvider from './providers/app-theme-provider';
+import NotFound from './screens/not-found-screen';
 
-const App: React.FunctionComponent = () => (
-    <AppThemeProvider>
-      <Container maxWidth={'sm'}>
-        <Box my={4}>
-          <Typography
-              component={'h1'}
-              gutterBottom={true}
-              variant={'h4'}
-          >
-            {'Create React App w/ Material-UI'}
-          </Typography>
-        </Box>
-      </Container>
-    </AppThemeProvider>
+const App = (): JSX.Element => (
+    <StrictMode>
+        <AppRouter>
+            <AppStoreProvider>
+                <AppThemeProvider themeType={'light'}>
+                    <AppConfigurationProvider>
+                        <Switch>
+                            {/*<Route*/}
+                            {/*    exact={true}*/}
+                            {/*    path={[LoginScreenPath, RootPath]}*/}
+                            {/*>*/}
+                            {/*    <Login />*/}
+                            {/*</Route>*/}
+                            <Route
+                                path={'*'}
+                                status={404}
+                            >
+                                <NotFound />
+                            </Route>
+                        </Switch>
+                    </AppConfigurationProvider>
+                </AppThemeProvider>
+            </AppStoreProvider>
+        </AppRouter>
+    </StrictMode>
 );
 
 export default App;
